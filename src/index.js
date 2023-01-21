@@ -70,8 +70,10 @@ app.post('/getProfile', async (req, res) => {
         const {token} = req.headers;
         if(!token) return res.status(401).send({message : 'Token not found not authorized'});
         const user = await jwt.verify(token, process.env.JWT_SECRET);
-      
-        return res.status(200).send({user});
+        
+        const details=await User.findOne({_id:user.id}).select('-password')
+        return res.status(200).send({user:details
+        });
 
       
         
